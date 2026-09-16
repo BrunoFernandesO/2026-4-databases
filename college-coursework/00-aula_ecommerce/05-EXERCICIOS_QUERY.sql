@@ -2,23 +2,45 @@
 -- PARTE A - AGREGAÇÃO SIMPLES (Revisão)
 -- ------------------------------------------------------
 -- Q30 - COUNT: Quantos produtos cadastrados?
-select count(idproduto) as qtd_produtos from produto;
+SELECT 
+    count(idproduto) AS qtd_produtos 
+FROM 
+    produto;
 
 -- Q31 - SUM, AVG, MAX, MIN: Estatísticas de preço
-SELECT sum(preco_unitario) as soma_total, 
-	avg(preco_unitario) as preco_medio,
-    max(preco_unitario) as produto_mais_caro,
-    min(preco_unitario) as produto_mais_barato
-FROM produto;
+SELECT 
+    sum(preco_unitario) AS soma_total, 
+	avg(preco_unitario) AS preco_medio,
+    max(preco_unitario) AS produto_mais_caro,
+    min(preco_unitario) AS produto_mais_barato
+FROM 
+    produto;
 
 -- Q32 - INNER JOIN + COUNT: Quantos produtos por categoria?
-select c.nome as nome_categoria,
- count(p.idproduto) as qtd_produtos
-from produto p inner join categoria c on c.idcategoria = p.categoria_id
-group by c.nome;
+SELECT 
+    c.nome AS nome_categoria,
+    count(p.idproduto) AS qtd_produtos
+FROM 
+    produto p 
+INNER JOIN categoria c ON
+    c.idcategoria = p.categoria_id
+GROUP BY 
+    c.nome;
 
--- teste: select p.* from produto p join categoria c on c.idcategoria = p.categoria_id where c.nome = "Periféricos";
 -- Q33 - INNER JOIN + SUM: Faturamento total por categoria (vendas reais)
+SELECT
+	c.nome,
+	SUM(i.preco_unitario * i.quantidade) as faturamento_total
+FROM
+	categoria c
+INNER JOIN produto p on
+	p.categoria_id = c.idcategoria
+INNER JOIN itempedido i on
+	i.produto_id = p.idproduto
+GROUP BY
+	c.nome
+ORDER BY
+	faturamento_total desc;
 
 -- Q34 - INNER JOIN + AVG: Ticket médio por cliente
 
