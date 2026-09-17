@@ -33,17 +33,28 @@ SELECT
 	SUM(i.preco_unitario * i.quantidade) as faturamento_total
 FROM
 	categoria c
-INNER JOIN produto p on
+INNER JOIN produto p ON
 	p.categoria_id = c.idcategoria
-INNER JOIN itempedido i on
+INNER JOIN itempedido i ON
 	i.produto_id = p.idproduto
 GROUP BY
 	c.nome
 ORDER BY
-	faturamento_total desc;
+	faturamento_total DESC;
 
 -- Q34 - INNER JOIN + AVG: Ticket médio por cliente
-
+SELECT
+    c.nome AS cliente,
+    AVG(p.total_pedido) AS ticket_medio
+FROM
+    cliente c
+INNER JOIN pedido p ON 
+    p.cliente_id = c.idcliente
+GROUP BY
+    c.nome
+ORDER BY 
+    ticket_medio DESC;
+    
 -- Q35 - INNER JOIN + MAX/MIN: Produto mais caro e mais barato vendido
 
 -- Q36 - JOIN 4 TABELAS + SUM: Total vendido por vendedor
