@@ -54,8 +54,17 @@ GROUP BY
     c.nome
 ORDER BY 
     ticket_medio DESC;
-    
+
 -- Q35 - INNER JOIN + MAX/MIN: Produto mais caro e mais barato vendido
+SELECT
+    MAX(pr.preco_unitario) AS produto_mais_caro,
+    MIN(pr.preco_unitario) AS produto_mais_barato
+FROM
+    produto pr  
+INNER JOIN itempedido i ON
+    pr.idproduto = i.produto_id
+WHERE
+    i.pedido_id IS NOT NULL;
 
 -- Q36 - JOIN 4 TABELAS + SUM: Total vendido por vendedor
 
