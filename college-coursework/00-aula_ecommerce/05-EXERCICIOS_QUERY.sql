@@ -126,6 +126,15 @@ WHERE
 -- Q42 - RIGHT JOIN + COUNT: Conta produtos por categoria usando RIGHT (mesmo resultado do LEFT invertido)
 
 -- Q43 - SELF JOIN Básico: Vendedor + Nome do seu Gerente
+SELECT
+	v.nome AS nome_vendedor,
+	g.nome AS nome_gerente
+FROM
+	vendedor v
+INNER JOIN vendedor g ON
+	g.idvendedor = v.gerente_id
+ORDER BY
+	v.nome ASC;
 
 -- Q44 - SELF JOIN + COUNT: Quantos subordinados cada gerente tem?
 SELECT
