@@ -3,7 +3,7 @@
 -- ------------------------------------------------------
 -- Q30 - COUNT: Quantos produtos cadastrados?
 SELECT 
-    count(idproduto) AS qtd_produtos 
+    COUNT(idproduto) AS qtd_produtos 
 FROM 
     produto;
 
@@ -30,7 +30,7 @@ GROUP BY
 -- Q33 - INNER JOIN + SUM: Faturamento total por categoria (vendas reais)
 SELECT
 	c.nome,
-	SUM(i.preco_unitario * i.quantidade) as faturamento_total
+	SUM(i.preco_unitario * i.quantidade) AS faturamento_total
 FROM
 	categoria c
 INNER JOIN produto p ON
@@ -112,8 +112,58 @@ WHERE
 		produto p);
 
 -- Q36 - JOIN 4 TABELAS + SUM: Total vendido por vendedor
+SELECT
+	v.nome,
+	SUM(ip.preco_unitario * ip.quantidade) AS total_vendido
+FROM
+	pedido p --tabela 1
+INNER JOIN vendedor v ON --tabela 2
+	v.idvendedor = p.vendedor_id
+INNER JOIN itempedido ip ON --tabela 3
+	ip.pedido_id = p.idpedido
+INNER JOIN produto pr ON --tabela 4 (requisito do exercicio)
+	pr.idproduto = ip.produto_id
+WHERE
+	ip.pedido_id IS NOT NULL
+GROUP BY
+	v.nome;
+
+-- Q36b - Metodo alternativo
+SELECT
+	v.nome AS nome_vendedor,
+	SUM(p.total_pedido) AS total_vendas
+FROM
+	pedido p
+INNER JOIN vendedor v ON
+	v.idvendedor = p.vendedor_id
+GROUP BY
+	v.nome;
+
+-- Q36c - Metodo alternativo 2
+SELECT
+	v.nome AS nome_vendedor,
+	SUM(ip.preco_unitario * ip.quantidade) AS total_vendido
+FROM
+	pedido p
+INNER JOIN vendedor v ON
+	v.idvendedor = p.vendedor_id
+INNER JOIN itempedido ip ON
+	ip.pedido_id = p.idpedido
+GROUP BY
+	v.nome;
 
 -- Q37 - LEFT JOIN + COUNT: Todas categorias + qtd produtos (mesmo com 0)
+SELECT
+	c.nome AS nome_categoria,
+	COUNT(p.idproduto) AS qtd_produtos
+FROM
+	categoria c
+left join produto p ON
+	c.idcategoria = p.categoria_id
+GROUP BY
+	c.nome
+ORDER BY
+	COUNT(p.idproduto) DESC;
 
 -- Q38 - LEFT JOIN + SUM: Todos produtos + total vendido (inclui nunca vendidos com 0)
 
@@ -139,7 +189,7 @@ ORDER BY
 -- Q44 - SELF JOIN + COUNT: Quantos subordinados cada gerente tem?
 SELECT
 	g.nome,
-	COUNT(s.gerente_id) as qtd_subordinados
+	COUNT(s.gerente_id) AS qtd_subordinados
 FROM
 	vendedor g
 INNER JOIN vendedor s ON
@@ -150,7 +200,7 @@ GROUP BY
 -- Q45 - SELF JOIN + SUM: Faturamento por gerente (soma das vendas da equipe)
 SELECT
 	g.nome,
-	SUM(p.total_pedido) as total_equipe
+	SUM(p.total_pedido) AS total_equipe
 FROM
 	vendedor g
 INNER JOIN vendedor v ON
@@ -167,7 +217,7 @@ GROUP BY
 -- Q48 - HAVING: Vendedores que venderam mais de R$ 1000 no total
 SELECT
 	v.nome,
-	SUM(p.total_pedido) as total_vendido
+	SUM(p.total_pedido) AS total_vendido
 FROM
 	vendedor v
 INNER JOIN pedido p ON
