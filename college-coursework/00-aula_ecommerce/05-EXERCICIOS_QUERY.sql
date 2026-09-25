@@ -158,7 +158,7 @@ SELECT
 	COUNT(p.idproduto) AS qtd_produtos
 FROM
 	categoria c
-left join produto p ON
+LEFT JOIN produto p ON
 	c.idcategoria = p.categoria_id
 GROUP BY
 	c.nome
@@ -180,6 +180,17 @@ ORDER BY
 	p.nome ASC;
 
 -- Q39 - LEFT JOIN + COUNT: Todos vendedores + qtd vendas (inclui gerentes sem venda)
+SELECT
+	v.nome AS nome_vendedor,
+	count(p.idpedido) AS qtd_vendas
+FROM
+	vendedor v
+LEFT JOIN pedido p ON
+	p.vendedor_id = v.idvendedor
+GROUP BY
+	v.idvendedor -- nao agrupei por nome, pois se dois vendedores tiverem o mesmo nome o group by ira agrupar dois vendedores distintos
+ORDER BY
+	qtd_vendas DESC;
 
 -- Q40 - LEFT JOIN + IS NULL (ANTI-JOIN): Vendedores que nunca venderam
 
