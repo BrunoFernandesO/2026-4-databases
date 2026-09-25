@@ -166,6 +166,18 @@ ORDER BY
 	COUNT(p.idproduto) DESC;
 
 -- Q38 - LEFT JOIN + SUM: Todos produtos + total vendido (inclui nunca vendidos com 0)
+SELECT
+	p.nome AS nome_produto,
+	COALESCE(SUM(ip.quantidade), 0) AS qtd_vendida, -- se SUM() for NULL, coalesce torna o valor 0
+	COALESCE(SUM(ip.preco_unitario * ip.quantidade), 0) AS total_vendido
+FROM
+	produto p
+LEFT JOIN itempedido ip ON
+	ip.produto_id = p.idproduto
+GROUP BY
+	p.idproduto, p.nome
+ORDER BY
+	p.nome ASC;
 
 -- Q39 - LEFT JOIN + COUNT: Todos vendedores + qtd vendas (inclui gerentes sem venda)
 
