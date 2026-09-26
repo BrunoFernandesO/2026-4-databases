@@ -182,7 +182,7 @@ ORDER BY
 -- Q39 - LEFT JOIN + COUNT: Todos vendedores + qtd vendas (inclui gerentes sem venda)
 SELECT
 	v.nome AS nome_vendedor,
-	count(p.idpedido) AS qtd_vendas
+	COUNT(p.idpedido) AS qtd_vendas -- COUNT nao precisa de coalesce, pois como NULL nao conta como valor, o count o considera ja sendo 0
 FROM
 	vendedor v
 LEFT JOIN pedido p ON
@@ -193,6 +193,16 @@ ORDER BY
 	qtd_vendas DESC;
 
 -- Q40 - LEFT JOIN + IS NULL (ANTI-JOIN): Vendedores que nunca venderam
+SELECT
+	v.nome AS vendedor_que_nunca_vendeu
+FROM
+	vendedor v
+LEFT JOIN pedido p ON
+	v.idvendedor = p.vendedor_id
+WHERE
+	p.idpedido IS NULL
+GROUP BY
+	v.idvendedor;
 
 -- Q41 - RIGHT JOIN: Todas categorias mesmo sem produto (inverso do LEFT)
 
